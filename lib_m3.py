@@ -1,0 +1,60 @@
+import tkinter as tk
+from tkinter import *
+from tkinter import messagebox
+import mysql.connector
+
+
+class teach:
+    def __init__(self,root):
+        self.root =Frame(root,height=768,width=1360).pack()
+        self.user1=StringVar()
+        self.user2=StringVar()
+        self.user3=StringVar()
+        self.user4=IntVar()
+        self.user5=StringVar()   
+    
+        self.a=PhotoImage(file = "back2.png")    
+        self.l1=label=Label(self.root,image=self.a,text='DAWN LIBRARY').place(x=0,y=0)
+        self.b=PhotoImage(file = "lib1.png")    
+        self.l1=label=Label(self.root,image=self.b,text='DAWN LIBRARY').place(x=540,y=0)
+        self.l3=Label(self.root,text='Teacher ID:',font=('Times',13),bg='Black',fg='white').place(x=630,y=200)
+        self.e2=Entry(self.root,width=30,textvar=self.user1).place(x=730,y=200)
+        self.l4=Label(self.root,text='Teacher Name :',font=('Times',13),bg='Black',fg='white').place(x=610,y=250)
+        self.e3=Entry(self.root,width=30,textvar=self.user2).place(x=730,y=250)
+        self.l5=Label(self.root,text='Date Of Birth:',font=('Times',13),bg='Black',fg='white').place(x=620,y=300)
+        self.e4=Entry(self.root,width=30,textvar=self.user3).place(x=730,y=300)
+        self.l6=Label(self.root,text='Phone No.:',font=('Times',13),bg='Black',fg='white').place(x=630,y=350)
+        self.e5=Entry(self.root,width=30,textvar=self.user4).place(x=730,y=350)
+        self.l7=Label(self.root,text='Accedmic Year :',font=('Times',13),bg='Black',fg='white').place(x=605,y=400)
+        self.e6=Entry(self.root,width=30,textvar=self.user5).place(x=730,y=400)
+        self.c=Button(self.root,width=7,height=2,text='Submit',font=10,bg='Black',fg='White',command=self.click).place(x=750,y=450)
+        self.q=PhotoImage(file = "back1.png")
+        self.label=Button(self.root,image=self.q,text='DAWN LIBRARY',command=self.click2).place(x=45,y=0)
+        self.w=PhotoImage(file = "home1.png")
+        self.label2=Button(self.root,image=self.w,text='DAWN LIBRARY',command=self.click1).place(x=0,y=0)
+    def click(self):
+       
+        e1=self.user1.get()
+        e2=self.user2.get()
+        e3=self.user3.get()
+        e4=self.user4.get()
+        e5=self.user5.get()
+  
+        if  e1=='' or e2=='' or e3=='' or e4 =='' or e5=='':
+            tk.messagebox.showinfo('warning','please fill up all boxes')
+    
+        else:
+            self.co=mysql.connector.connect(host='localhost',user='root',password='rsd123',database='Library')
+            self.c=self.co.cursor()
+            self.c.execute("CREATE TABLE IF NOT EXISTS teachers_info(Teacher_id varchar(10),Name varchar(50),D_O_B varchar(50),phone_no BIGINT,Accadmic_year varchar(50))")
+            self.c.execute("insert into teachers_info (Teacher_id,Name,D_O_B,phone_no,Accadmic_year) VALUES ('{}','{}','{}',{},'{}')".format(e1,e2,e3,e4,e5))
+            self.co.commit()
+            self.co.close()
+            
+            tk.messagebox.showinfo('successful','stored in database')
+    def click1(self):
+        import Home_page
+    def click2(self):
+        import book
+root=Frame(height=768,width=1360).pack()
+d=teach(root)
